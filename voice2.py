@@ -7,6 +7,7 @@ import re
 from vosk import Model, KaldiRecognizer
 import functools
 print = functools.partial(print, flush=True)  # Force immediate output
+from chatbot import voice_assistant
 
 # ========================== COMMAND FUNCTIONS ==========================
 
@@ -178,9 +179,18 @@ if __name__ == "__main__":
                     if text:
                         print("You said:", text)
                         parsed = text.split()
+                        if len(parsed) > 3:
+                            print("Sending to voice assistant for processing...")
+                            try:
+                                command = voice_assistant(text)
+                                print("Voice assistant response:", command)
+                                parsed = command.strip().split()
+                            except Exception as e:
+                                print("Error getting response from voice assistant:", e)
+                                continue
                         if len(parsed) >= 2:
                             execute_command(parsed)
                         else:
-                            print("Incomplete command.")
+                            print("Incomplete or invalid command.")
         except KeyboardInterrupt:
             print("\n Voice control terminated.")

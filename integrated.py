@@ -12,163 +12,112 @@ class ControlInterface:
         self.root = root
         self.root.title("Voice & Eye Control System")
         self.root.geometry("1000x700")
+        self.root.configure(bg="#f9f9f9")
         
         # Configure styles
         self.style = ttk.Style()
-        self.style.configure('TFrame', background='#f0f0f0')
-        self.style.configure('TLabel', background='#f0f0f0', font=('Helvetica', 12))
-        self.style.configure('Title.TLabel', font=('Helvetica', 18, 'bold'))
-        self.style.configure('TButton', font=('Helvetica', 12), padding=10)
-        self.style.configure('Red.TButton', foreground='red')
-        self.style.configure('Green.TButton', foreground='green')
-        self.style.configure('TNotebook', background='#f0f0f0')
-        self.style.configure('TNotebook.Tab', font=('Helvetica', 12))
-        
-        # Main container
+        self.style.theme_use("clam")
+        self.style.configure('TFrame', background='#f9f9f9')
+        self.style.configure('TLabel', background='#f9f9f9', font=('Segoe UI', 12))
+        self.style.configure('Title.TLabel', font=('Segoe UI', 20, 'bold'), foreground='#333')
+        self.style.configure('Section.TLabel', font=('Segoe UI', 14, 'bold'), foreground='#555')
+        self.style.configure('TButton', font=('Segoe UI', 12), padding=10)
+        self.style.configure('Red.TButton', foreground='white', background='#d9534f')
+        self.style.map('Red.TButton', background=[('active', '#c9302c')])
+        self.style.configure('Green.TButton', foreground='white', background='#5cb85c')
+        self.style.map('Green.TButton', background=[('active', '#4cae4c')])
+        self.style.configure('TNotebook.Tab', font=('Segoe UI', 12, 'bold'))
+
+        # Main frame
         self.main_frame = ttk.Frame(root)
         self.main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
-        
+
         # Title
-        self.title_label = ttk.Label(
-            self.main_frame, 
-            text="Voice & Eye Control System", 
-            style='Title.TLabel'
-        )
+        self.title_label = ttk.Label(self.main_frame, text="🎯 Voice & Eye Control Dashboard", style='Title.TLabel')
         self.title_label.pack(pady=(0, 20))
-        
-        # Notebook for tabs
+
+        # Notebook tabs
         self.notebook = ttk.Notebook(self.main_frame)
         self.notebook.pack(fill=tk.BOTH, expand=True)
-        
-        # Control tab
+
+        # Tabs
         self.control_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.control_tab, text="Controls")
-        
-        # Command tab
         self.command_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.command_tab, text="Command Log")
-        
-        # Voice commands tab
         self.voice_help_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.voice_help_tab, text="Voice Commands")
-        
-        # Control buttons frame
+        self.notebook.add(self.control_tab, text="🕹️ Controls")
+        self.notebook.add(self.command_tab, text="📜 Command Log")
+        self.notebook.add(self.voice_help_tab, text="🎤 Voice Commands Help")
+
+        # --- Control Panel ---
         self.control_frame = ttk.Frame(self.control_tab)
-        self.control_frame.pack(fill=tk.X, pady=10)
-        
-        # Voice control button
-        self.voice_btn = ttk.Button(
-            self.control_frame,
-            text="Start Voice Control",
-            command=self.toggle_voice_control,
-            style='Green.TButton'
-        )
+        self.control_frame.pack(fill=tk.X, pady=15)
+
+        self.voice_btn = ttk.Button(self.control_frame, text="▶️ Start Voice Control", command=self.toggle_voice_control, style='Green.TButton')
         self.voice_btn.pack(side=tk.LEFT, expand=True, padx=10)
-        
-        # Eye control button
-        self.eye_btn = ttk.Button(
-            self.control_frame,
-            text="Start Eye Tracking",
-            command=self.toggle_eye_control,
-            style='Green.TButton'
-        )
+
+        self.eye_btn = ttk.Button(self.control_frame, text="👁️ Start Eye Tracking", command=self.toggle_eye_control, style='Green.TButton')
         self.eye_btn.pack(side=tk.LEFT, expand=True, padx=10)
-        
-        # Status frame
+
+        # Status Section
+        ttk.Label(self.control_tab, text="System Status", style="Section.TLabel").pack(anchor=tk.W, padx=10, pady=(20, 5))
         self.status_frame = ttk.Frame(self.control_tab)
-        self.status_frame.pack(fill=tk.BOTH, expand=True, pady=10)
-        
-        # Voice control status
-        self.voice_status = tk.StringVar(value="Voice Control: Stopped")
-        self.voice_label = ttk.Label(
-            self.status_frame,
-            textvariable=self.voice_status,
-            font=('Helvetica', 12)
-        )
+        self.status_frame.pack(fill=tk.BOTH, expand=True, pady=10, padx=10)
+
+        self.voice_status = tk.StringVar(value="🛑 Voice Control: Stopped")
+        self.voice_label = ttk.Label(self.status_frame, textvariable=self.voice_status)
         self.voice_label.pack(anchor=tk.W, pady=5)
-        
-        # Eye control status
-        self.eye_status = tk.StringVar(value="Eye Tracking: Stopped")
-        self.eye_label = ttk.Label(
-            self.status_frame,
-            textvariable=self.eye_status,
-            font=('Helvetica', 12)
-        )
+
+        self.eye_status = tk.StringVar(value="🛑 Eye Tracking: Stopped")
+        self.eye_label = ttk.Label(self.status_frame, textvariable=self.eye_status)
         self.eye_label.pack(anchor=tk.W, pady=5)
-        
-        # Command log in command tab
-        self.log_text = tk.Text(
-            self.command_tab,
-            height=30,
-            width=100,
-            state=tk.DISABLED,
-            font=('Consolas', 10),
-            wrap=tk.WORD
-        )
+
+        # --- Command Log ---
+        self.log_text = tk.Text(self.command_tab, height=30, width=100, state=tk.DISABLED, font=('Consolas', 10), wrap=tk.WORD, bg="#fcfcfc")
         self.log_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
-        # Scrollbar for log
         self.scrollbar = ttk.Scrollbar(self.log_text)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.log_text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.config(command=self.log_text.yview)
-        
-        # Voice commands help in voice help tab
-        self.help_text = tk.Text(
-            self.voice_help_tab,
-            height=30,
-            width=100,
-            state=tk.DISABLED,
-            font=('Consolas', 10),
-            wrap=tk.WORD
-        )
+
+        # --- Voice Help ---
+        self.help_text = tk.Text(self.voice_help_tab, height=30, width=100, state=tk.DISABLED, font=('Segoe UI', 11), wrap=tk.WORD, bg="#fcfcfc")
         self.help_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
-        # Populate voice commands help
         self.populate_voice_commands_help()
-        
-        # Variables to track running processes
+
+        # State tracking
         self.voice_process = None
         self.eye_process = None
         self.voice_running = False
         self.eye_running = False
-        
-        # Queue for capturing output
         self.output_queue = queue.Queue()
-        
-        # Start checking the output queue periodically
         self.root.after(100, self.check_output_queue)
-    
+
     def populate_voice_commands_help(self):
-        help_content = """Available Voice Commands:
+        help_content = """🧠 **Available Voice Commands**
 
-1. Mouse Movement:
-   - "move to X Y" - Move mouse to coordinates X Y
-   - "go left/right/up/down N" - Move mouse N pixels in direction
-   - Example: "go left 50" or "go up twenty"
+            🎯 **Mouse Movement**
+            • "move to X Y" – Move mouse to specific coordinates  
+            • "go left/right/up/down N" – Move mouse N pixels  
+            (Example: "go left 50" or "go up twenty")
 
-2. Mouse Clicks:
-   - "left click" - Left mouse click
-   - "right click" - Right mouse click
-   - "double click" - Double left click
-   - "hold left/right" - Hold mouse button
-   - "release left/right" - Release mouse button
-   - "scroll up/down N" - Scroll N steps
+            🖱️ **Mouse Clicks**
+            • "left click", "right click", "double click"  
+            • "hold/release left/right"  
+            • "scroll up/down N"
 
-3. Keyboard Control:
-   - "type this TEXT" - Type the specified text
-   - "hold key KEY" - Hold down a key
-   - "release key KEY" - Release a key
-   - "press key KEY" - Press and release a key
-   - "use shortcut KEY1 KEY2..." - Press key combination
-     (Example: "use shortcut ctrl s")
+            ⌨️ **Keyboard Control**
+            • "type this TEXT" – Type out text  
+            • "press key KEY" – Press a key (e.g., Enter)  
+            • "hold key KEY", "release key KEY"  
+            • "use shortcut KEY1 KEY2 ..." (e.g., "ctrl s")
 
-4. System Control:
-   - "quit program" - Exit the application
+            ⚙️ **System Control**
+            • "quit program" – Exit the application
 
-Note: Numbers can be spoken as words (e.g., "twenty") or digits (e.g., "20")
-"""
+            ℹ️ *Tip:* You can speak numbers as words or digits ("twenty" = "20")
+        """
         self.help_text.config(state=tk.NORMAL)
+        self.help_text.delete(1.0, tk.END)
         self.help_text.insert(tk.END, help_content)
         self.help_text.config(state=tk.DISABLED)
     
