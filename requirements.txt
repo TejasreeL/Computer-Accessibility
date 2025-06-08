@@ -1,3 +1,9 @@
+pyautogui
+sounddevice
+vosk
+typing_extensions
 opencv-python
 mediapipe
-pyautogui
+python-dotenv
+google-generativeai
+tk
