@@ -5,7 +5,7 @@ A Python-based accessibility system that allows disabled users to control their 
 ---
 
 ## 💡 Features
-### 👁️ Eye Tracking (Mouse Control)
+### 👁️ Eye Tracking
 - Move the mouse cursor with your gaze
 - Left click and right click with left wink and right wink respectively
 ### 🗣️ Voice Command Categories
@@ -40,6 +40,6 @@ For example:
 - Extract it and place the folder in the root directory
 ### 4. Set Gemini API Key (Optional for NLP)
 - Create a file named .env in the root directory of the project
-- Add the following line to it: `GEMINI_API="api key"`
+- Add the following line to it: `GEMINI_API="your api key"`
 ### 5. Run the Application
 - Run the following code `python integrated.py`
