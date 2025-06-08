@@ -45,16 +45,6 @@ def word_to_number(word: str) -> int:
 def move_mouse_to(x: int, y: int) -> None:
     pag.moveTo(x, y, duration=1)
 
-def move_mouse_relative(direction: str, distance: int) -> None:
-    if direction == "up":
-        pag.moveRel(0, -distance, duration=1)
-    elif direction == "down":
-        pag.moveRel(0, distance, duration=1)
-    elif direction == "left":
-        pag.moveRel(-distance, 0, duration=1)
-    elif direction == "right":
-        pag.moveRel(distance, 0, duration=1)
-
 def click_mouse(button: str = "left") -> None:
     pag.click(button=button)
 
@@ -66,6 +56,16 @@ def hold_mouse(button: str = "left") -> None:
 
 def release_mouse(button: str = "left") -> None:
     pag.mouseUp(button=button)
+
+def move_mouse_relative(direction: str, distance: int) -> None:
+    if direction == "up":
+        pag.moveRel(0, -distance, duration=1)
+    elif direction == "down":
+        pag.moveRel(0, distance, duration=1)
+    elif direction == "left":
+        pag.moveRel(-distance, 0, duration=1)
+    elif direction == "right":
+        pag.moveRel(distance, 0, duration=1)
 
 def scroll_mouse(direction: str, amount: int) -> None:
     pag.scroll(amount if direction == "up" else -amount)
@@ -153,7 +153,7 @@ def execute_command(words: List[str]):
 
 # ========================== VOSK SETUP ==========================
 
-model = Model("vosk-model-en-in-0.5")  # Adjust path if needed
+model = Model("vosk-model-en-in-0.5")
 recognizer = KaldiRecognizer(model, 16000)
 q = queue.Queue()
 

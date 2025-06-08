@@ -58,7 +58,6 @@ class ControlInterface:
         self.eye_btn = ttk.Button(self.control_frame, text="👁️ Start Eye Tracking", command=self.toggle_eye_control, style='Green.TButton')
         self.eye_btn.pack(side=tk.LEFT, expand=True, padx=10)
 
-        # Status Section
         ttk.Label(self.control_tab, text="System Status", style="Section.TLabel").pack(anchor=tk.W, padx=10, pady=(20, 5))
         self.status_frame = ttk.Frame(self.control_tab)
         self.status_frame.pack(fill=tk.BOTH, expand=True, pady=10, padx=10)
@@ -233,6 +232,7 @@ class ControlInterface:
             
             # Run the script
             self.eye_process = subprocess.Popen([python_exe, script_path])
+            
             
         except Exception as e:
             self.log_message(f"Error running eye tracking: {str(e)}")
